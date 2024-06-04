@@ -26,6 +26,7 @@ function getDownloadUrl(version: string): string {
 
   let archMap: { [arch: string]: string } = {
     x64: 'amd64',
+    arm64: 'arm64',
   };
 
   const arch = archMap[os.arch()];

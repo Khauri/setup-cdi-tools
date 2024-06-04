@@ -27,13 +27,15 @@ function getDownloadUrl(version: string): string {
 
   let archMap: { [arch: string]: string } = {
     x64: 'amd64',
+    arm64: 'arm64',
   };
 
   const arch = archMap[os.arch()];
   const platform = platformMap[os.platform()];
   const extension = os.platform() === 'win32' ? '.zip' : '.tar.gz';
+  const isWindowsArm64 = arch === 'arm64' && platform === 'windows';
 
-  if (!arch || !platform) {
+  if (!arch || !platform || isWindowsArm64) {
     throw `Unsupported platform. platform:${os.platform()}, arch:${os.arch()}`;
   }
 
@@ -49,6 +51,7 @@ function getBinPath(): string {
 
   let archMap: { [arch: string]: string } = {
     x64: 'amd64',
+    arm64: 'arm64',
   };
 
   const arch = archMap[os.arch()];

@@ -18,35 +18,25 @@ export class JqInstaller implements Installer {
 }
 
 function getDownloadUrl(version: string): string {
-  let filename: string | null = null;
+  let platformMap: { [platform: string]: string } = {
+    linux: 'linux',
+    darwin: 'macos',
+    win32: 'windows',
+  };
 
-  switch (os.platform()) {
-    case 'linux':
-      switch (os.arch()) {
-        case 'x64':
-          filename = `jq-linux64`;
-          break;
-      }
-      break;
-    case 'darwin':
-      switch (os.arch()) {
-        case 'x64':
-          filename = `jq-osx-amd64`;
-          break;
-      }
-      break;
-    case 'win32':
-      switch (os.arch()) {
-        case 'x64':
-          filename = `jq-win64.exe`;
-          break;
-      }
-      break;
-  }
+  let archMap: { [arch: string]: string } = {
+    x64: 'amd64',
+    arm64: 'arm64',
+  };
 
-  if (!filename) {
+  const arch = archMap[os.arch()];
+  const platform = platformMap[os.platform()];
+  const extension = os.platform() === 'win32' ? '.exe' : '';
+  const isWindowsArm64 = arch === 'arm64' && platform === 'windows';
+
+  if (!arch || !platform || isWindowsArm64) {
     throw `Unsupported platform. platform:${os.platform()}, arch:${os.arch()}`;
   }
 
-  return `https://github.com/stedolan/jq/releases/download/jq-${version}/${filename}`;
+  return `https://github.com/jqlang/jq/releases/download/jq-${version}/jq-${platform}-${arch}${extension}`;
 }

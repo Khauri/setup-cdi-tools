@@ -7,6 +7,7 @@ import { SkaffoldInstaller } from './installers/skaffold';
 import { HelmInstaller } from './installers/helm';
 import { HubInstaller } from './installers/hub';
 import { Installer } from './installers/installer';
+import { OrasInstaller } from './installers/oras';
 
 async function run() {
   for (const [tool, installer] of Object.entries(installers)) {
@@ -28,6 +29,7 @@ const installers = {
   skaffold: new SkaffoldInstaller(),
   helm: new HelmInstaller(),
   hub: new HubInstaller(),
+  oras: new OrasInstaller(),
 } as { [tool: string]: Installer };
 
 run().catch(core.setFailed);

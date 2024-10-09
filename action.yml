@@ -26,6 +26,9 @@ inputs:
   hub:
     description: 'The version of hub'
     required: false
+  oras:
+    description: 'The version of oras'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

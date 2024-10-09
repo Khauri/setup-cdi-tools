@@ -22,6 +22,7 @@ Consult the following support table to see if a build for the target architectur
 | [skaffold](https://github.com/GoogleContainerTools/skaffold) | amd64,arm64 | amd64,arm64 | amd64 |
 | [helm](https://github.com/helm/helm) | amd64,arm64 | amd64,arm64 | amd64 |
 | [hub](https://github.com/github/hub) | amd64,arm64 | amd64,arm64 | amd64 |
+| [oras](https://github.com/oras-project/oras) | amd64,arm64 | amd64,arm64 | amd64 |
 
 ## Usage
 

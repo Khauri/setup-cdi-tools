@@ -1,6 +1,6 @@
-name: 'Setup CD tools by coscene'
+name: 'Setup CD tools'
 description: 'Set up a variety of tools for Continuous Delivery.'
-author: 'coscene.io'
+author: 'khauri'
 branding:
   icon: 'download-cloud'
   color: 'blue'
@@ -28,6 +28,9 @@ inputs:
     required: false
   oras:
     description: 'The version of oras'
+    required: false
+  custom:
+    description: 'Provide a YAML configuration for downloading and installing a custom tool'
     required: false
 runs:
   using: 'node16'

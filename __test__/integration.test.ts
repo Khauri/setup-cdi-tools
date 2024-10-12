@@ -39,6 +39,6 @@ for(const tool in versions) {
 }
 
 afterAll(async () => {
-  // await io.rmRF(tempDir);
-  // await io.rmRF(toolDir);
+  await io.rmRF(tempDir);
+  await io.rmRF(toolDir);
 });

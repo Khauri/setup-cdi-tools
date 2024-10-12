@@ -1,9 +1,13 @@
 import * as core from '@actions/core';
+import path from 'path'
 import yaml from 'js-yaml';
-import * as tools from './tools.yml';
+
+import toolsYaml from './tools.yml';
 import {getBinary, getTarballBinary} from './utils';
 
-type PlatformConfig = {
+export const tools = yaml.load(toolsYaml) as Record<string, ToolConfig>;
+
+export type PlatformConfig = {
   version?: string,
   /**
    * Usually the file extension of the downloaded tool will be used to determine if the tool is a binary or an archive.
@@ -38,7 +42,7 @@ type PlatformConfig = {
   extension?: string,
 }
 
-type ToolConfig = PlatformConfig & {
+export type ToolConfig = PlatformConfig & {
   platforms?: {
     // Operating system specific settings
     linux?: PlatformConfig & {as?: string},
@@ -66,7 +70,7 @@ function resolveTemplate(template: string, variables: Record<string, string>): s
   });
 }
 
-function resolveConfig(config: String|ToolConfig): [PlatformConfig, Record<string, string>] {
+export function resolveConfig(config: String|ToolConfig): [PlatformConfig, Record<string, string>] {
   const variables = {
     platform: core.platform.platform as string,
     arch: core.platform.arch,
@@ -107,26 +111,31 @@ function resolveConfig(config: String|ToolConfig): [PlatformConfig, Record<strin
   return [settings, variables];
 }
 
-function install(toolName: string, config: PlatformConfig, variables: Record<string, string>) {
+export function install(toolName: string, toolConfig: PlatformConfig) {
   return core.group(`Install ${toolName}`, async () => {
-    const url = resolveTemplate(config.template!, {
-      ...variables,
+    const [config, platformVariables] = resolveConfig({
+      ...tools[toolName] as ToolConfig,
+      ...toolConfig,
+    });
+    const variables = {
+      ...platformVariables,
       version: config.version!,
       extension: config.extension!,
-    });
+    };
+    const url = resolveTemplate(config.template!, variables);
     const unArchive = config.unArchive ?? url.match(/(\.zip$|\.tar\.gz$|\.tgz$)/)?.[1] ?? false;
     let {binaryPath} = config;
     if(binaryPath) {
       binaryPath = resolveTemplate(binaryPath, variables);
     }
-    console.log({binaryPath, url});
-    // const toolPath = unArchive 
-    //   ? await getTarballBinary(toolName, config.version!, url)
-    //   : await getBinary(toolName, config.version!, url);
+    // console.log({binaryPath, url, config});
+    const toolPath = unArchive 
+      ? await getTarballBinary(toolName, config.version!, url, binaryPath)
+      : await getBinary(toolName, config.version!, url);
     // TODO: switch from binaryPath to toolPath in this log
-    core.debug(`${toolName} has been cached at ${binaryPath}`);
-
-    // core.addPath(path.dirname(toolPath));
+    core.debug(`${toolName} has been cached at ${toolPath}`);
+    core.addPath(path.dirname(toolPath));
+    return toolPath;
   });
 }
 
@@ -138,7 +147,7 @@ async function run() {
       const toolConfig = typeof config === 'string' 
         ? {version, template: config} 
         : {...config, version};
-      await install(tool, ...resolveConfig(toolConfig));
+      await install(tool, toolConfig);
     }
   }
   // Install custom tools
@@ -146,9 +155,15 @@ async function run() {
   if(customTools) {
     const parsed = yaml.load(customTools) as Record<string, String|ToolConfig>;
     for(const [tool, config] of Object.entries(parsed)) {
-      await install(tool, ...resolveConfig(config));
+      const toolConfig = typeof config === 'string'
+        ? {template: config}
+        : config as ToolConfig;
+      await install(tool, toolConfig);
     }
   }
 }
 
-run().catch(core.setFailed);
+// Maybe replace with import.meta.main in the future
+if(!process.env.IS_TEST) {
+  run().catch(core.setFailed);
+}

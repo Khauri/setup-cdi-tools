@@ -1,5 +1,6 @@
 helm:
-  template: 'https://get.helm.sh/helm-v${version}-${platform}-${arch}${extension}'
+  repository: https://github.com/helm/helm
+  template: https://get.helm.sh/helm-v${version}-${platform}-${arch}${extension}
   binaryPath: ${platform}-${arch}
   platforms:
     linux:
@@ -18,7 +19,8 @@ helm:
       extension: .zip
 
 hub:
-  template: 'https://github.com/github/hub/releases/download/v${version}/hub-${platform}-${arch}-${version}${extension}'
+  repository: https://github.com/mislav/hub
+  template: https://github.com/mislav/hub/releases/download/v${version}/hub-${platform}-${arch}-${version}${extension}
   binaryPath: hub-${platform}-${arch}-${version}/bin
   platforms:
     linux:
@@ -29,7 +31,8 @@ hub:
     darwin:
       architectures: 
         x64: {as: amd64}
-        arm64: true
+        # hub doesn't have an arm64 release for macOS but the amd64 binary works fine I guess
+        arm64: {as: amd64}
       extension: .tgz
     windows:
       architectures:
@@ -38,13 +41,15 @@ hub:
       extension: .exe
 
 jq:
-  template: 'https://github.com/jqlang/jq/releases/download/jq-${version}/jq-${platform}-${arch}${extension}'
+  repository: https://github.com/jqlang/jq
+  template: https://github.com/jqlang/jq/releases/download/jq-${version}/jq-${platform}-${arch}${extension}
   platforms:
     linux:
       architectures: 
         x64: {as: amd64}
         arm64: true
     darwin:
+      as: macos
       architectures: 
         x64: {as: amd64}
         arm64: true
@@ -54,7 +59,8 @@ jq:
       extension: .exe
 
 kubectl:
-  template: 'https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/${platform}/${arch}/kubectl${extension}'
+  repository: https://www.downloadkubernetes.com/
+  template: https://dl.k8s.io/v${version}/bin/${platform}/${arch}/kubectl
   platforms:
     linux:
       architectures: 
@@ -70,13 +76,27 @@ kubectl:
       extension: .exe
 
 kustomize:
-  template: 'https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${version}/kustomize_v${version}_${platform}_${arch}.tar.gz'
-  architectures:
-    x64: {as: amd64}
-    arm64: true
+  repository: https://github.com/kubernetes-sigs/kustomize
+  template: https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${version}/kustomize_v${version}_${platform}_${arch}${extension}
+  platforms:
+    linux:
+      architectures: 
+        x64: {as: amd64}
+        arm64: true
+      extension: .tar.gz
+    darwin:
+      architectures: 
+        x64: {as: amd64}
+        arm64: true
+      extension: .tar.gz
+    windows:
+      architectures: 
+        x64: {as: amd64}
+      extension: .zip
 
 oras:
-  template: 'https://github.com/oras-project/oras/releases/download/v${version}/oras_${version}_${os}_${platform}${extension}'
+  repository: https://github.com/oras-project/oras
+  template: https://github.com/oras-project/oras/releases/download/v${version}/oras_${version}_${platform}_${arch}${extension}
   platforms:
     linux:
       architectures: 
@@ -94,7 +114,8 @@ oras:
       extension: .zip
 
 skaffold:
-  template: 'https://github.com/GoogleContainerTools/skaffold/releases/download/v${version}/skaffold-${platform}-${arch}${extension}'
+  repository: https://github.com/GoogleContainerTools/skaffold
+  template: https://github.com/GoogleContainerTools/skaffold/releases/download/v${version}/skaffold-${platform}-${arch}${extension}
   platforms:
     linux:
       architectures: 
@@ -110,7 +131,8 @@ skaffold:
       extension: .exe
 
 yq:
-  template: 'https://github.com/mikefarah/yq/releases/download/v${version}/yq_${platform}_${arch}${extension}'
+  repository: https://github.com/mikefarah/yq
+  template: https://github.com/mikefarah/yq/releases/download/v${version}/yq_${platform}_${arch}${extension}
   platforms:
     linux:
       architectures: 

@@ -1,3 +1,2 @@
-preload = [
-  "./node_modules/bun-plugin-yml/src/index.ts",
-]
+[loader]
+".yml" = "text"

@@ -1,9 +1,8 @@
 {
-  "name": "setup-cd-tools",
+  "name": "setup-cdi-tools",
   "version": "3.0.0",
   "main": "dist/index.js",
   "license": "MIT",
-  "author": "coscene.io",
   "scripts": {
     "build": "bun build --outdir ./dist --target node ./src/index.ts",
     "test": "IS_TEST=true bun test",

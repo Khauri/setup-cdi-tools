@@ -11,16 +11,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set Node.js 16
-        uses: actions/setup-node@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 16
+          bun-version: latest
 
       - name: Install
-        run: yarn install
-
-      - name: Lint
-        run: yarn format-check
+        run: bun install
 
       - name: Test
-        run: yarn test
+        run: bun test

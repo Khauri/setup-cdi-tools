@@ -113,6 +113,24 @@ oras:
         x64: {as: amd64}
       extension: .zip
 
+pkl:
+  repository: https://github.com/apple/pkl/releases/download
+  template: https://github.com/apple/pkl/releases/download/${version}/pkl-${platform}-${arch}${extension}
+  platforms:
+    linux:
+      architectures: 
+        x64: {as: amd64}
+        arm64: {as: aarch64}
+    darwin:
+      as: macos
+      architectures: 
+        x64: {as: amd64}
+        arm64: {as: aarch64}
+    windows:
+      architectures:
+        x64: {as: amd64}
+      extension: .exe
+
 skaffold:
   repository: https://github.com/GoogleContainerTools/skaffold
   template: https://github.com/GoogleContainerTools/skaffold/releases/download/v${version}/skaffold-${platform}-${arch}${extension}

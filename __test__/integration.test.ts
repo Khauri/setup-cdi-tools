@@ -27,6 +27,7 @@ const versions = {
   oras: '1.2.0',
   skaffold: '2.13.2',
   yq: '4.44.3',
+  pkl: '0.27.0',
 };
 
 for(const tool in versions) {

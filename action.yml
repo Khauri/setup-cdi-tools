@@ -29,6 +29,9 @@ inputs:
   oras:
     description: 'The version of oras'
     required: false
+  pkl:
+    description: 'The version of pkl'
+    required: false
   custom:
     description: 'Provide a YAML configuration for downloading and installing a custom tool'
     required: false

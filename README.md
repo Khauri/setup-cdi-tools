@@ -28,6 +28,7 @@ jobs:
           yq: '2.3.0'
           jq: '1.6'
           hub: '2.14.2'
+          pkl: '0.27.0'
           # etc...
       ...
 ```
@@ -51,6 +52,7 @@ When deciding the version of the tool that you would like to use, be sure to use
 | [helm](https://github.com/helm/helm) | amd64,arm64 | amd64,arm64 | amd64 |
 | [hub](https://github.com/github/hub) | amd64,arm64 | amd64,arm64 | amd64 |
 | [oras](https://github.com/oras-project/oras) | amd64,arm64 | amd64,arm64 | amd64 |
+| [pkl](https://github.com/apple/pkl) | amd64,arm64 | amd64,arm64 | amd64 | 
 
 ## Custom Tools
 
@@ -105,7 +107,7 @@ Finally publish the changes by committing and pushing to your branch
 
 ### Adding new built-in tools
 
-1. Modify the `src/tools.yml` file to 
+1. Modify the `src/tools.yml` file to add the new tool.
 2. Add a version for the tool in `__test__/integration.test.ts` and ensure the tests pass
 3. Add a test in `.github/workflows/integration_test.yaml` for the new tool
 4. Update the Built-in Tools section of this README
